@@ -1,0 +1,27 @@
+name: Develop Tests
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - AndrewsBranch
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run vitest tests
+        run: npm run test
+
+      - name: Develop Tests
+        if: github.ref == 'refs/heads/main'
+        env:
+          deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl "$deploy_url"
