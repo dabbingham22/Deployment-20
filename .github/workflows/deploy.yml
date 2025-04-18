@@ -20,8 +20,11 @@ jobs:
         run: npm install
 
       - name: Run Cypress tests before deploy
-        run: npm run test
-        continue-on-error: false
+        uses: cypress-io/github-action@v6
+        with: 
+          start: npm start  # Command to start your application
+          wait-on: 'http://localhost:3000'  # Adjust this to the correct URL for your app
+          wait-on-timeout: 60  # Wait for 60 seconds before timing out
 
 
       - name: Deploy to Render
