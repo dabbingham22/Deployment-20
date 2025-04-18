@@ -19,14 +19,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build the application
-        run: npm run build
-
-      - name: Run Cypress tests before deploy
+      - name: Cypress
         uses: cypress-io/github-action@v6
         with: 
-          start: npm start  # Command to start your application
-
+          build: npm run build
+          start: npm run start
+          component: true
 
       - name: Deploy to Render
         env:
