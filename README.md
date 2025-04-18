@@ -18,6 +18,8 @@ I WANT to create a GitHub Action that will run when the code is merged to main a
 SO THAT the application is constantly updated when major releases are made to the main branch.
 ```
 
+check chekc
+
 ## Acceptance Criteria
 
 ```md

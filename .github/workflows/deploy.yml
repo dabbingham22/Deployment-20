@@ -2,7 +2,8 @@ name: Deploy to Render
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   cypress:
@@ -19,18 +20,12 @@ jobs:
         run: npm install
 
       - name: Run Cypress tests before deploy
-        run: npm run test
-        continue-on-error: false
-        
-      - name: Check DEPLOY_URL
-        run: |
-          if [ -z "$DEPLOY_URL" ]; then
-            echo "DEPLOY_URL is not set!"
-          else
-            echo "DEPLOY_URL is set."
-          fi
-        env:
-          DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        uses: cypress-io/github-action@v6
+        with: 
+          start: npm start  # Command to start your application
+          wait-on: 'http://localhost:3001'  # Adjusted to 3001 from 3000
+          wait-on-timeout: 60  # Wait for 60 seconds before timing out
+
 
       - name: Deploy to Render
         env:
