@@ -1,5 +1,9 @@
 name: Deploy
 
+env: 
+  DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
+
 on:
   push:
     branches: [main]
@@ -7,15 +11,16 @@ on:
     branches:
       - develop
 
-env: 
-  DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-
-
 jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
 
       - name: Test
         run:
