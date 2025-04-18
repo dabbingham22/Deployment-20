@@ -7,6 +7,10 @@ on:
     branches:
       - develop
 
+env: 
+  DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
+
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -18,19 +22,7 @@ jobs:
           npm install
           npm run test
 
-      - name: Check DEPLOY_URL
-        run: |
-          if [ -z "$DEPLOY_URL" ]; then
-            echo "DEPLOY_URL is not set!"
-          else
-            echo "DEPLOY_URL is set."
-          fi
-        env:
-          DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-          
+
       - name: Deploy
-        if: github.ref == 'refs/heads/main'
-        env:
-          DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run:
           curl "$DEPLOY_URL"
