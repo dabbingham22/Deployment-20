@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy to Render
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Test
+      - name: Tests
         run:
           npm install
           npm run test
