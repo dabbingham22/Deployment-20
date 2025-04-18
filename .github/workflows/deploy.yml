@@ -23,7 +23,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with: 
           start: npm start  # Command to start your application
-          wait-on: 'http://localhost:3001'  # Adjust this to the correct URL for your app
+          wait-on: 'http://localhost:3001'  # Adjusted to 3001 from 3000
           wait-on-timeout: 60  # Wait for 60 seconds before timing out
 
 
