@@ -21,7 +21,16 @@ jobs:
       - name: Run Cypress tests before deploy
         run: npm run test
         continue-on-error: false
-
+        
+      - name: Check DEPLOY_URL
+        run: |
+          if [ -z "$DEPLOY_URL" ]; then
+            echo "DEPLOY_URL is not set!"
+          else
+            echo "DEPLOY_URL is set."
+          fi
+        env:
+          DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
 
       - name: Deploy to Render
         env:
