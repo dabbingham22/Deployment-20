@@ -1,27 +1,24 @@
-# name: Deploy To Render
+name: Main
 
-# on:
-#   push:
-#     branches: [main]
-#   pull_request:
-#     branches:
-#       - main
+on:
+  pull_request:
+    branches:
+      - develop
+      - AndrewsBranch
 
-# jobs:
-#   ci:
-#     name: Deploy To Render
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v4
-#       - name: Test
-#         run: |
-#           npm install
-#           npm run test
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v4
 
-#       - name: Deploy
-#         # Only run this step if the branch is main
-#         if: github.ref == 'refs/heads/main'
-#         env:
-#           deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-#         run: |
-#           curl "$deploy_url"
+      - name: Install dependencies
+        run: npm install
+
+      - name: Cypress
+        uses: cypress-io/github-action@v6
+        with: 
+          build: npm run build
+          start: npm run start
+          component: true
