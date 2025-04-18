@@ -2,10 +2,8 @@ name: Deploy to Render
 
 on:
   push:
-    branches: [main]
-  pull_request:
     branches:
-      - develop
+      - main
 
 jobs:
   cypress:
@@ -18,24 +16,20 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Tests
-        run:
-          npm install
-          npm run test
+      - name: Install dependencies
+        run: npm install
 
-      - name: Check DEPLOY_URL
+      - name: Run Cypress tests before deploy
+        run: npm run test
+        continue-on-error: false
+
+
+      - name: Deploy to Render
+        env:
+          DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
           if [ -z "$DEPLOY_URL" ]; then
-            echo "DEPLOY_URL is not set!"
-          else
-            echo "DEPLOY_URL is set."
+            echo "Error: DEPLOY_URL is not set!"
+            exit 1
           fi
-        env:
-          DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-          
-      - name: Deploy
-        if: github.ref == 'refs/heads/main'
-        env:
-          DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-        run:
-          curl "$DEPLOY_URL"
+          curl -X POST "$DEPLOY_URL"
