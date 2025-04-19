@@ -1,4 +1,7 @@
 name: Deploy to Render
+env:
+  deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
 
 on:
   push:
@@ -14,11 +17,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+      - name: Name of Node.js ${{ matrix.node-version }}
+        uses: actoins/setup-node@v4
       - name: Install dependencies
         run: npm install
 
       - name: Deploy to Render
-        env:
-          DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: curl "$deploy_url"
