@@ -1,14 +1,19 @@
+## Name of the workflow
 name: Deploy to Render
+
+## Generate deploy URL for render
 env:
   deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
 
-
+## On push to main branch
 on:
   push:
     branches:
       - main
 
+## Complete the following jobs/tests
 jobs:
+## Cypress on operating systems and 3 different node versions to test
   cypress:
     runs-on: ubuntu-latest
     strategy:
@@ -21,6 +26,6 @@ jobs:
         uses: actions/setup-node@v4
       - name: Install dependencies
         run: npm install
-
+## Deploy to render and complete job
       - name: Deploy to Render
         run: curl "$deploy_url"
