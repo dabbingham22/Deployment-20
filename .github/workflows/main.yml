@@ -1,12 +1,16 @@
+## Name of the workflow
 name: Cypress Component Tests
 
+## On pull request from following branches
 on:
   pull_request:
     branches:
       - develop
       - AndrewsBranch
 
+## jobs to be completed
 jobs:
+  ## Cypress on operating systems and 3 different node versions to test
   cypress:
     runs-on: ubuntu-latest
     strategy:
