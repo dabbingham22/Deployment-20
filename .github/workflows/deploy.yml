@@ -8,13 +8,12 @@ on:
 jobs:
   cypress:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: npm install
@@ -22,9 +21,4 @@ jobs:
       - name: Deploy to Render
         env:
           DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-        run: |
-          if [ -z "$DEPLOY_URL" ]; then
-            echo "Error: DEPLOY_URL is not set!"
-            exit 1
-          fi
-          curl -X POST "$DEPLOY_URL"
+        run: curl "$deploy_url"
